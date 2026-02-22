@@ -63,7 +63,7 @@ model Account {
   @@index([userId])
   @@map("account")
 }
-
+  
 model Verification {
   id         String   @id
   identifier String

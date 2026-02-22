@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,7 +15,6 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 export default function LoginPage() {
-
   const [githubPending, startGithubTransition] = useTransition(); //this is to show the pending state when the Login with github button clicked or inshort its for pending state
 
   async function signInWithGithub() {
@@ -29,8 +28,10 @@ export default function LoginPage() {
             toast.success("Signed in with Github, you will be redirected...");
           },
           onError: (error) => {
-            toast.error(error.error.message);
-            console.error(error);
+            console.error("GitHub sign-in error:", error);
+            toast.error(
+              `Sign-in failed: ${error.error?.message || "Internal Server Error"}`,
+            );
           },
         },
       });
