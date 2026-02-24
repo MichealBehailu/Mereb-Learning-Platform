@@ -52,7 +52,7 @@ const LoginForm = () => {
         fetchOptions:{
           onSuccess: ()=>{
             toast.success("Email sent ")
-            router.push("/verify-request")
+            router.push(`/verify-request?email=${email}`) //this will add the email to the url, this uis used for the verify-request page to get the email
           },
           onError: ()=>{
             toast.error("Error sending email")
