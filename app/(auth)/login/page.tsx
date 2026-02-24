@@ -1,4 +1,3 @@
-
 import { authClient } from "@/lib/auth-client";
 import LoginForm from "./_component/LoginForm";
 import { auth } from "@/lib/auth";
@@ -10,8 +9,9 @@ export default async function LoginPage() {
     headers: await headers(),
   });
 
-  if(session){ //this will prevent logged in users from accessing the login page
-    return redirect("/")
+  if (session) {
+    //this will prevent logged in users from accessing the login page
+    return redirect("/");
   }
 
   return <LoginForm />;
