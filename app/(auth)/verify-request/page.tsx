@@ -29,7 +29,7 @@ export default function VerfiyRequst() {
   const params = useSearchParams(); //to get the email from the url
   const email = params.get("email") as string; //same //as string make it string to set the below email property to this variable
 
-  const router = useRouter();
+  const router = useRouter(); //just to push the user to the /
 
   function verifyOtp() {
     //this function is to verify the otp
