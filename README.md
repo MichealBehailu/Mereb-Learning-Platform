@@ -1,4 +1,4 @@
-This is an online learning platform with full high-level authentication and progress tracking system.
+This is an online learning platform like udemy with full high-level authentication and progress tracking system.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
