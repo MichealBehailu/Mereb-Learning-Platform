@@ -6,7 +6,7 @@ sensitiveInfo,
 shield,
 slidingWindow,
 
-} '@arcjet/next'
+} from '@arcjet/next'
 
 
 export { //just to simplify imports
