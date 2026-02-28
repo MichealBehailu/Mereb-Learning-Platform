@@ -1,15 +1,10 @@
 "use client";
-import Image from "next/image";
 
-import { ThemeToggle } from "@/components/ui/theme-Toggle";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 
 const features : {title: string, description: string, icon: string}[] = [
@@ -37,20 +32,8 @@ const features : {title: string, description: string, icon: string}[] = [
 ]
 
 export default function Home() {
-  const { data: session } = authClient.useSession(); //to fetch the user data on a client side
-  const router = useRouter();
 
-  async function signOut() {
-    //to signout the user
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/"); // redirect to login page
-          toast.success("Signed out successfully");
-        },
-      },
-    });
-  }
+ 
 
   return (
     <>
@@ -76,6 +59,8 @@ export default function Home() {
               Explore Courses
             </Link>
 
+            {/* TODO: the sign in button below is going to be rendered even if it has a session so deal with it later */}
+
             <Link
               className={buttonVariants({
                 size: "lg",
@@ -89,7 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32">
               {features.map((feature, index) => (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
