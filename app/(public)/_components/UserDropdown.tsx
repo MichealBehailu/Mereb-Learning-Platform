@@ -1,32 +1,30 @@
 import { Button } from "../../../components/ui/button";
 
 import {
-    BookOpenIcon,
-    ChevronDownIcon,
-    HomeIcon,
-    LayoutDashboardIcon,
-    LogOutIcon
+  BookOpenIcon,
+  ChevronDownIcon,
+  HomeIcon,
+  LayoutDashboardIcon,
+  LogOutIcon
 } from "lucide-react";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu";
 
 import Link from "next/link";
 
+import useSignout from '@/hooks/use-signout';
 import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
 } from "../../../components/ui/avatar";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 interface iAppProps{
     name:string;
@@ -36,22 +34,7 @@ interface iAppProps{
 
 export function UserDropdown({name,email,image}:iAppProps) {
 
-  const router = useRouter();
-
-     async function signOut() {
-    //to signout the user
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/"); // redirect to login page
-          toast.success("Signed out successfully");
-        },
-        onError: ()=>{
-            toast.error("Failed to sign out");
-        }
-      },
-    });
-  }
+  const handleSignOut = useSignout(); //to handle the signout using a hook created at the hook folder
   
   return (
     <DropdownMenu>
@@ -100,7 +83,7 @@ export function UserDropdown({name,email,image}:iAppProps) {
 
         </DropdownMenuGroup>
 
-        <DropdownMenuItem onClick={signOut}>
+        <DropdownMenuItem onClick={handleSignOut}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           Logout
         </DropdownMenuItem>
