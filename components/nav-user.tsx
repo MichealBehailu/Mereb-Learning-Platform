@@ -2,6 +2,7 @@
 
 import {
   IconCreditCard,
+  IconDashboard,
   IconDotsVertical,
   IconLogout,
   IconNotification,
@@ -29,6 +30,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { authClient } from "@/lib/auth-client"
+import Link from "next/link"
+import { HomeIcon, Tv2 } from "lucide-react"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
@@ -46,7 +49,7 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg grayscale">
+              <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={session?.user.image ?? `https://avatar.vercel.sh/${session?.user.email}`} alt={session?.user.name} />
                 <AvatarFallback className="rounded-lg">{session?.user.name && session?.user.name.length > 0 ? session?.user.name.charAt(0).toUpperCase() : session?.user.email.charAt(0).toUpperCase() }</AvatarFallback>
               </Avatar>
@@ -81,17 +84,23 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <IconUserCircle />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/">
+                    <HomeIcon />
+                    Homepage
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
+              <DropdownMenuItem asChild>
+                <Link href="/admin">
+                  <IconDashboard />
+                  Dashboard
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconNotification />
-                Notifications
+              <DropdownMenuItem asChild>
+                <Link href="/admin/courses">
+                  <Tv2 />
+                  Courses
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
