@@ -33,6 +33,8 @@ import { authClient } from "@/lib/auth-client"
 import Link from "next/link"
 import { HomeIcon, Tv2 } from "lucide-react"
 import useSignout from '@/hooks/use-signout'
+
+
 export function NavUser() {
   const { isMobile } = useSidebar()
   const {data:session, isPending} = authClient.useSession()
