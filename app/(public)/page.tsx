@@ -59,7 +59,7 @@ export default function Home() {
               Explore Courses
             </Link>
 
-            {/* TODO: the sign in button below is going to be rendered even if it has a session so deal with it later */}
+            {/* TODO: the sign in button below is going to be rendered even if it has a session so deal with it later. Use getSession function */}
 
             <Link
               className={buttonVariants({
