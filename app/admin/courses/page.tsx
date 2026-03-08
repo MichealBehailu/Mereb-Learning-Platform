@@ -10,6 +10,7 @@ export default function CoursesPage(){
             <Link href="/admin/courses/create" className={buttonVariants()}>Create Course</Link>
            </div>
 
+{/* I will show the courses offered*/}
            <div>
             <h1>Here you will see all of the courses</h1>
            </div>
