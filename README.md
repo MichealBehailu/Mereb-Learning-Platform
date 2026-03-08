@@ -1,5 +1,7 @@
 Mereb Learning is an online learning platform designed to provide a comprehensive and interactive learning experience for students and educators. With robust authentication and progress tracking capabilities, Mereb Learning offers a seamless and personalized learning experience, allowing users to track their progress, set goals, and achieve their educational objectives. Whether you are looking to enhance your skills, pursue higher education, or simply explore new topics, Mereb Learning is the perfect destination for you.
 
+
+fastest technology used
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
