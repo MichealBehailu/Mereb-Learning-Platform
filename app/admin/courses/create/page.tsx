@@ -308,7 +308,8 @@ export default function CourseCreationPage() {
                   )}
                 />
 
-                <Button>
+                {/*TODO: Currently not implemented*/}
+<Button>
                     Create Course <PlusIcon className="ml-1" size={16} />
                 </Button>
             </form>
