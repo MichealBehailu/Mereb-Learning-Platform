@@ -17,9 +17,9 @@ export function Menubar({ editor }: IAppProps) {
   if (!editor) return null; //check if we have editor  if not we will return null
 
   return (
-    <div>
+    <div className="border border-input rounded-t-lg p-2 bg-card flex flex-wrap gap-1 items-center">
       <TooltipProvider>
-        <div>
+        <div className="flex flex-wrap gap-1">
             {/* bold */}
           <Tooltip>
             <TooltipTrigger asChild>
@@ -172,7 +172,31 @@ export function Menubar({ editor }: IAppProps) {
             <TooltipContent>Ordered List</TooltipContent>
           </Tooltip>
         </div>  
+
+          <div className="w-px h-6 bg-border mx-2 "></div>
+
+          <div className="flex flex-wrap gap-1">
+             {/* Align Left */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Toggle
+                    size="sm"
+                    pressed={editor.isActive({ textAlign: 'left' })}
+                    onPressedChange={() =>
+                      editor.chain().focus().setTextAlign('left').run()
+                    }
+                    className={cn(
+                      editor.isActive({ textAlign: 'left' }) && "bg-muted text-muted-forground",
+                    )}
+                  >
+                    <ListIcon />
+                  </Toggle>
+                </TooltipTrigger>
+                <TooltipContent>Bullet List</TooltipContent>
+              </Tooltip>
+          </div>
       </TooltipProvider>
     </div>
   );
 }
+ 
