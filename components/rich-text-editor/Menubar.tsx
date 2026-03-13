@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Toggle } from "../ui/toggle";
-import { Bold, Heading1, Heading2, Heading3, Italic, Strikethrough } from "lucide-react";
+import { Bold, Heading1, Heading2, Heading3, Italic, ListIcon, ListOrdered, Strikethrough } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface IAppProps {
@@ -134,7 +134,7 @@ export function Menubar({ editor }: IAppProps) {
             <TooltipContent>Heading 3</TooltipContent>
           </Tooltip>
 
-            {/* heading 3 */}
+            {/* Bullet List */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Toggle
@@ -144,13 +144,32 @@ export function Menubar({ editor }: IAppProps) {
                   editor.chain().focus().toggleBulletList().run()
                 }
                 className={cn(
-                  editor.isActive("heading") && "bg-muted text-muted-forground",
+                  editor.isActive("bulletList") && "bg-muted text-muted-forground",
                 )}
               >
-                <Heading3 />
+                <ListIcon />
               </Toggle>
             </TooltipTrigger>
-            <TooltipContent>Heading 3</TooltipContent>
+            <TooltipContent>Bullet List</TooltipContent>
+          </Tooltip>
+
+            {/* Ordered List */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive('orderedList')}
+                onPressedChange={() =>
+                  editor.chain().focus().toggleOrderedList().run()
+                }
+                className={cn(
+                  editor.isActive("orderedList") && "bg-muted text-muted-forground",
+                )}
+              >
+                <ListOrdered />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Ordered List</TooltipContent>
           </Tooltip>
         </div>  
       </TooltipProvider>
