@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Toggle } from "../ui/toggle";
-import { Bold, Heading1, Italic } from "lucide-react";
+import { Bold, Heading1, Heading2, Heading3, Italic, Strikethrough } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface IAppProps {
@@ -71,7 +71,7 @@ export function Menubar({ editor }: IAppProps) {
                   editor.isActive("strike") && "bg-muted text-muted-forground",
                 )}
               >
-                <Italic />
+                <Strikethrough />
               </Toggle>
             </TooltipTrigger>
             <TooltipContent>Strike</TooltipContent>
@@ -94,6 +94,63 @@ export function Menubar({ editor }: IAppProps) {
               </Toggle>
             </TooltipTrigger>
             <TooltipContent>Heading 1</TooltipContent>
+          </Tooltip>
+
+           {/* heading 2 */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive("heading", {level:2})}
+                onPressedChange={() =>
+                  editor.chain().focus().toggleHeading({level:2}).run()
+                }
+                className={cn(
+                  editor.isActive("heading") && "bg-muted text-muted-forground",
+                )}
+              >
+                <Heading2 />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Heading 2</TooltipContent>
+          </Tooltip>
+
+           {/* heading 3 */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive("heading", {level:3})}
+                onPressedChange={() =>
+                  editor.chain().focus().toggleHeading({level:3}).run()
+                }
+                className={cn(
+                  editor.isActive("heading") && "bg-muted text-muted-forground",
+                )}
+              >
+                <Heading3 />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Heading 3</TooltipContent>
+          </Tooltip>
+
+            {/* heading 3 */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive('bulletList')}
+                onPressedChange={() =>
+                  editor.chain().focus().toggleBulletList().run()
+                }
+                className={cn(
+                  editor.isActive("heading") && "bg-muted text-muted-forground",
+                )}
+              >
+                <Heading3 />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Heading 3</TooltipContent>
           </Tooltip>
         </div>  
       </TooltipProvider>
