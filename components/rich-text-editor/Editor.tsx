@@ -11,15 +11,20 @@ export function RichTextEditor() {
             StarterKit,
             TextAlign.configure({
                 types:['heading', 'paragraph']
-            }),
-        
+            })
         ],
+        editorProps:{ //this for customization for the EditorContent component
+            attributes:{
+                class:'min-h-[300px] p-4 focus:outline-none'
+            }
+        },
         immediatelyRender:false 
     })
     
     return (
-        <div>
+        <div className='w-full border border-input rounded-lg overflow-hidden dark:bg-input/30'>
             <Menubar editor={editor}/>
+            <EditorContent editor={editor}  />
         </div>
     )
 }
