@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Toggle } from "../ui/toggle";
-import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1, Heading2, Heading3, Italic, ListIcon, ListOrdered, Strikethrough } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1, Heading2, Heading3, Italic, ListIcon, ListOrdered, Redo, Strikethrough, Undo } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
@@ -238,14 +238,24 @@ export function Menubar({ editor }: IAppProps) {
           <div className="w-px h-6 bg-border mx-2"></div>
           
           <div className="flex flex-wrap gap-1">
-            {/* Align Right */}
+            {/* Undo Button */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size="sm" variant={'ghost'} type='button' onClick={()=> editor.chain().focus().undo().run()}>
-                    
+                  <Button size="sm" variant={'ghost'} type='button' onClick={()=> editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
+                    <Undo/>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Align Justify</TooltipContent>
+                <TooltipContent>Undo</TooltipContent>
+              </Tooltip>
+
+              {/* Redo Button */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant={'ghost'} type='button' onClick={()=> editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
+                    <Redo/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Redo</TooltipContent>
               </Tooltip>
           </div>
       </TooltipProvider>
