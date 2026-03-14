@@ -42,6 +42,7 @@ export function UserDropdown({name,email,image}:iAppProps) {
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
             <AvatarImage src={image} alt="Profile image" />
+            {/* if there is no name then we can use the first of the email character for the avatar */}
             <AvatarFallback>{name[0]?.toUpperCase()||email[0]?.toUpperCase()}</AvatarFallback>
           </Avatar>
           <ChevronDownIcon
