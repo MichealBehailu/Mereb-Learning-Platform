@@ -15,7 +15,7 @@ export function RichTextEditor() {
         ],
         editorProps:{ //this for customization for the EditorContent component
             attributes:{
-                class:'min-h-[300px] p-4 focus:outline-none'
+                class:'min-h-[300px] p-4 focus:outline-none pros prose-sm sm:prose lg:prose-lg xl-prose-xl dark:prose-invert !w-full !max-w-none'
             }
         },
         immediatelyRender:false 
