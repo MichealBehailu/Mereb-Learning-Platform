@@ -159,7 +159,7 @@ export default function CourseCreationPage() {
                         className="min-h-[120px]"
                         {...field}
                       /> */}
-                      <RichTextEditor />
+                      <RichTextEditor field={field}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
