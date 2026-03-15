@@ -24,7 +24,7 @@ export function RichTextEditor({field}: {field: any}) {
         },
 
         content:field.value? JSON.parse(field.value):'<p>Describe your course here...</p>',
-        immediatelyRender:false 
+        immediatelyRender:false, //to not server rendered 
     })
     
     return (

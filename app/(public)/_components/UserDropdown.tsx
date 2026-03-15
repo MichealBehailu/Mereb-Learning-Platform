@@ -43,11 +43,11 @@ export function UserDropdown({name,email,image}:iAppProps) {
           <Avatar>
             <AvatarImage src={image} alt="Profile image" />
             {/* if there is no name then we can use the first of the email character for the avatar */}
-            <AvatarFallback>{name[0]?.toUpperCase()||email[0]?.toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{name[0]?.toUpperCase()}</AvatarFallback>
           </Avatar>
           <ChevronDownIcon
             className="opacity-60"
-            size={16}
+            size={16} 
             aria-hidden="true"
           />
         </Button>
