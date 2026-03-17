@@ -6,12 +6,51 @@ import { cn } from "@/lib/utils";
 import { RenderEmptyState, RenderErrorState } from "./RenderState";
 import { toast } from "sonner";
 import type { FileRejection } from "react-dropzone";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+
+interface UploaderState{
+    id:string | null; //we use this for mapping purpose only
+    file: File|null;
+    uploading: boolean;
+    progress : number;
+    key?:string ;
+    isDeleting:boolean;
+    error:boolean;
+    objectUrl?:string //local
+    fileType:"image"|"video"
+}
 
 export function Uploader() {
+
+    const [fileState, setFileState] = useState<UploaderState>({
+        error:false, //this fields are for initials
+        file:null,
+        id:null,
+        uploading:false,
+        progress:0,
+        isDeleting:false,
+        fileType:"image"    
+    })
+
+    
   
     const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Do something with the files
-    console.log(acceptedFiles);
+   if(acceptedFiles.length>0){
+    const file = acceptedFiles[0];
+    
+    setFileState({
+        file:file,
+        uploading:false,
+        progress:0,
+        objectUrl:URL.createObjectURL(file), //to store it like local url
+        error:false,
+        id:uuidv4(), //must be unique
+        isDeleting:false,
+        fileType:'image'
+    })
+
+   }
   }, []);
 
   function rejectedFiles(fileRejection:FileRejection[]){
