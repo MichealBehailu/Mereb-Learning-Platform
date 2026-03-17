@@ -52,11 +52,11 @@ export function UserDropdown({name,email,image}:iAppProps) {
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="max-w-64 ">
+      <DropdownMenuContent align="end" className="min-w-52">
         <DropdownMenuLabel className="flex min-w-0 flex-col"> 
             <span className="text-foreground turncate text-sm font-medium">{name}</span>
             <span className="text-muted-foreground turncate text-xs font-normal">{email}</span>
-        </DropdownMenuLabel>
+        </DropdownMenuLabel>  
         
         <DropdownMenuSeparator />
 
