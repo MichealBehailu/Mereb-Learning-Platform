@@ -33,7 +33,17 @@ export function Uploader() {
         fileType:"image"    
     })
 
-    
+    function uploadFile(file:File){ 
+        setFileState(prev=>({ //gets prev file state and updates it
+            ...prev,
+            uploading:true,
+            progress:0
+        }))
+
+        try{
+
+        }catch()
+    }
   
     const onDrop = useCallback((acceptedFiles: File[]) => {
    if(acceptedFiles.length>0){

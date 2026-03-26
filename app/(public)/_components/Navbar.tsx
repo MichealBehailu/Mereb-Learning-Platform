@@ -41,11 +41,11 @@ export function Navbar() {
 
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            {isPending ? null : session ? (
+            {isPending ? null : session ? (//TODO: add skeleton for the loading 
               <UserDropdown
                 name={
                   session?.user.name && session?.user.name.length > 0
-                    ? session?.user.name.charAt(0).toUpperCase()
+                    ? session?.user.name.toLocaleUpperCase()
                     : session?.user.email.split("@")[0]
                 }
                 email={session.user.email}

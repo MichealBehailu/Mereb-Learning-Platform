@@ -35,7 +35,7 @@ interface iAppProps{
 export function UserDropdown({name,email,image}:iAppProps) {
 
   const handleSignOut = useSignout(); //to handle the signout using a hook created at the hook folder
-  
+  console.log(name, email, image);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
