@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
+//get font from Google font
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
