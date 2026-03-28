@@ -12,7 +12,7 @@ export default function CoursesPage(){
 
 {/* I will show the courses offered*/}
            <div>
-            <h1>Here you will see all of the courses</h1>
+            <h1>Here you will see all of the available courses</h1>
            </div>
         </>
     )
