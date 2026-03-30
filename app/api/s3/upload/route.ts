@@ -9,7 +9,7 @@ const fileUploadSchema = z.object({
 })
 
 
-export function POST(request: Request){
+export async function POST(request: Request){
     
     try {
         const body = request.body; //to get the boady input but we need some kind of validation //so we create a schema called fileUploadSchema 
@@ -19,10 +19,10 @@ export function POST(request: Request){
             return NextResponse.json({error: 'Invalid request body'}, {status: 400}) //400 means failed 
         }
 
-        
+        const {fileName, contentType, size, isImage} = validation.data
         
     } catch (error) {
         
     }
 
-}
+} 
