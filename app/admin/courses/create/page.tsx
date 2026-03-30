@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import slugify from "slugify";
+import slugify from "slugify"; //to get the slug from the name with no space
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
