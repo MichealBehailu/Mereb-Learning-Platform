@@ -166,7 +166,7 @@ async function handleRemoveFile(){
       toast.error('Failed to remove file from storage')
       setFileState((prev) => ({
       ...prev,
-      isDeleting:true,
+      isDeleting:false,
       error:true
     }));
 
@@ -184,7 +184,7 @@ async function handleRemoveFile(){
      progress:0,
      objectUrl:undefined,
      error:false,
-     fieType:'image',
+     fileType:'image',
      id:null,
      isDeleting:false
     }));
@@ -202,7 +202,7 @@ async function handleRemoveFile(){
     }));
 
   }
-}
+} 
 
 
   function rejectedFiles(fileRejection: FileRejection[]) {

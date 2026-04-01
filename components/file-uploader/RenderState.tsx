@@ -51,7 +51,7 @@ export function RenderUploadedState({previewUrl, isDeleting , handleRemoveFile}:
   return(
     <div>
       <Image src={previewUrl} className={'object-contain'} fill alt="Uploaded file" />
-      <Button variant={"destructive"} size='icon' className={cn("absolute top-4 right-4")} onClick={handleRemoveFile} disable={isDeleting}> {isDeleting ? ( <Loader2 className='size-4 animate-spin' /> ) : <XIcon className="size-4"/>} </Button>
+      <Button variant={"destructive"} type="button" size='icon' className={cn("absolute top-4 right-4")} onClick={handleRemoveFile} disabled={isDeleting}> {isDeleting ? ( <Loader2 className='size-4 animate-spin' /> ) : <XIcon className="size-4"/>} </Button>
     </div>
   )
 }
