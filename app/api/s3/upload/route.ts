@@ -16,7 +16,7 @@ const fileUploadSchema = z.object({
 export async function POST(request: Request){
     
     try {
-        const body = request.body; //to get the boady input but we need some kind of validation //so we create a schema called fileUploadSchema 
+        const body = await request.json(); 
         const validation = fileUploadSchema.safeParse(body) //check if the body that is sent as an input validates the schema
 
         if(!validation.success){ //if the body fails to validate the schema then validation.sucess will be false
@@ -36,7 +36,7 @@ export async function POST(request: Request){
         
         const presignedUrl = await getSignedUrl(S3,command, {
             expiresIn:360, //URL expires in 6min //in second(represented) in this case it is 6 minutes
-
+            //
         })
 
         const response = {presignedUrl, key:uniqueKey}

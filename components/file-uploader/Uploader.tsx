@@ -172,7 +172,7 @@ export function Uploader() {
 
     if(fileState.objectUrl){
       return(
-        <h1>upload fileRejection</h1>
+        <h1>Uploaded file</h1>
       )
     }
 
