@@ -21,7 +21,8 @@ interface UploaderState {
   fileType: "image" | "video";
 }
 
-export function Uploader() { //main 
+export function Uploader() {
+  //main
   const [fileState, setFileState] = useState<UploaderState>({
     error: false, //this fields are for initials
     file: null,
@@ -66,15 +67,53 @@ export function Uploader() { //main
         return;
       }
 
-      const {presignedUrl, key} = await presignedResponse.json();
+      const { presignedUrl, key } = await presignedResponse.json();
+
+      await new Promise<void>((resolve, reject) => {
+        //this is used to track the upload progress //since fetchthen cant do it we use XHR
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentageCompleted = (event.loaded / event.total) * 100; //this will give us the percentage uploaded // if we upload 5mb then first the loaded(e.g 2mb) is divided by the total(5mb) and multiplied by 100 to get the percentage
+            setFileState((prev) => ({
+              ...prev,
+              progress: Math.round(percentageCompleted), //round the percentage to the nearest whole number
+            }));
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200 || xhr.status === 204) {
+            setFileState((prev) => ({
+              ...prev,
+              progress: 100,
+              uploading: false,
+              key: key,
+            }));
+
+            toast.success("File uploaded successfully");
+            resolve();
+          } else {
+            reject(new Error("Upload failed"));
+          }
+
+          xhr.onerror = () => {
+            reject(new Error("Upload failed"));
+          };
+
+          xhr.open("PUT", presignedUrl);
+          xhr.setRequestHeader("Content-Type", file.type);
+          xhr.send(file);
+        };
+      });
     } catch (error) {
-      console.error("Error getting presigned URL:", error);
-      toast.error("Failed to get presigned URL");
+      toast.error("Something went wrong");
       setFileState((prev) => ({
         ...prev,
-        uploading: false,
         progress: 0,
         error: true,
+        uploading: false,
       }));
     }
   }
