@@ -7,80 +7,116 @@ import { RenderEmptyState, RenderErrorState } from "./RenderState";
 import { toast } from "sonner";
 import type { FileRejection } from "react-dropzone";
 import { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-interface UploaderState{
-    id:string | null; //we use this for mapping purpose only
-    file: File|null;
-    uploading: boolean;
-    progress : number;
-    key?:string ;
-    isDeleting:boolean;
-    error:boolean;
-    objectUrl?:string //local
-    fileType:"image"|"video"
+interface UploaderState {
+  id: string | null; //we use this for mapping purpose only
+  file: File | null;
+  uploading: boolean;
+  progress: number;
+  key?: string;
+  isDeleting: boolean;
+  error: boolean;
+  objectUrl?: string; //local
+  fileType: "image" | "video";
 }
 
-export function Uploader() {
+export function Uploader() { //main 
+  const [fileState, setFileState] = useState<UploaderState>({
+    error: false, //this fields are for initials
+    file: null,
+    id: null,
+    uploading: false,
+    progress: 0,
+    isDeleting: false,
+    fileType: "image",
+  });
 
-    const [fileState, setFileState] = useState<UploaderState>({
-        error:false, //this fields are for initials
-        file:null,
-        id:null,
-        uploading:false,
-        progress:0,
-        isDeleting:false,
-        fileType:"image"    
-    })
+  async function uploadFile(file: File) {
+    setFileState((prev) => ({
+      //gets prev file state and updates it
+      ...prev,
+      uploading: true,
+      progress: 0,
+    }));
 
-    function uploadFile(file:File){ 
-        setFileState(prev=>({ //gets prev file state and updates it
-            ...prev,
-            uploading:true,
-            progress:0
-        }))
+    try {
+      //1. get presigned url
 
-        try{
+      const presignedResponse = await fetch("/api/s3/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type,
+          size: file.size,
+          isImage: true,
+        }),
+      });
 
-        }catch()
+      if (!presignedResponse.ok) {
+        toast.error("Failed to get presigned URL");
+        setFileState((prev) => ({
+          ...prev,
+          uploading: false,
+          progress: 0,
+          error: true,
+        }));
+
+        return;
+      }
+
+      const {presignedUrl, key} = await presignedResponse.json();
+    } catch (error) {
+      console.error("Error getting presigned URL:", error);
+      toast.error("Failed to get presigned URL");
+      setFileState((prev) => ({
+        ...prev,
+        uploading: false,
+        progress: 0,
+        error: true,
+      }));
     }
-  
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-   if(acceptedFiles.length>0){
-    const file = acceptedFiles[0];
-    
-    setFileState({
-        file:file,
-        uploading:false,
-        progress:0,
-        objectUrl:URL.createObjectURL(file), //to store it like local url
-        error:false,
-        id:uuidv4(), //must be unique
-        isDeleting:false,
-        fileType:'image'
-    })
+  }
 
-   }
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
+
+      setFileState({
+        file: file,
+        uploading: false,
+        progress: 0,
+        objectUrl: URL.createObjectURL(file), //to store it like local url
+        error: false,
+        id: uuidv4(), //must be unique
+        isDeleting: false,
+        fileType: "image",
+      });
+    }
   }, []);
 
-  function rejectedFiles(fileRejection:FileRejection[]){
-    if(fileRejection.length){
+  function rejectedFiles(fileRejection: FileRejection[]) {
+    if (fileRejection.length) {
+      const tooManyFiles = fileRejection.find(
+        (rejection) => rejection.errors[0].code === "too-many-files",
+      );
 
-        const tooManyFiles = fileRejection.find((rejection)=>rejection.errors[0].code === 'too-many-files')
-        
-        const fileSizeToBig = fileRejection.find((rejection)=>rejection.errors[0].code === 'file-too-large')
-        
-        if(tooManyFiles){
-           toast.error('Too many files selected, max is 1')
-        }
+      const fileSizeToBig = fileRejection.find(
+        (rejection) => rejection.errors[0].code === "file-too-large",
+      );
 
-        if(fileSizeToBig){
-            toast.error('File Size exceeds the limit')
-        }
-        
-        if(fileSizeToBig){
-           toast.error('File size too big, max is 5mb')
-        }
+      if (tooManyFiles) {
+        toast.error("Too many files selected, max is 1");
+      }
+
+      if (fileSizeToBig) {
+        toast.error("File Size exceeds the limit");
+      }
+
+      if (fileSizeToBig) {
+        toast.error("File size too big, max is 5mb");
+      }
     }
   }
 
@@ -90,7 +126,7 @@ export function Uploader() {
     maxFiles: 1, //only allowed to upload 1 file only
     multiple: false, //can select only one file at a time
     maxSize: 5 * 1024 * 1024, //5mb max file size
-    onDropRejected: rejectedFiles
+    onDropRejected: rejectedFiles,
   });
   return (
     <Card
