@@ -154,10 +154,53 @@ async function handleRemoveFile(){
       isDeleting:true
     }));
 
-    
+    const response = await fetch('/api/s3/delete',{
+      method:'DELETE',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        key:fileState.key
+      })
+    })
 
-  } catch (error) {
-    
+    if(!response.ok){
+      toast.error('Failed to remove file from storage')
+      setFileState((prev) => ({
+      ...prev,
+      isDeleting:true,
+      error:true
+    }));
+
+    return;
+    }
+
+    if(fileState.objectUrl && !fileState.objectUrl.startsWith('http')){ // This condition checks if the objectUrl starts with 'http', which indicates that it's an external URL
+        // If it's not an external URL, it's a local URL, so we need to revoke it before setting a new one
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+
+    setFileState(() => ({
+     file:null,
+     uploading:false,
+     progress:0,
+     objectUrl:undefined,
+     error:false,
+     fieType:'image',
+     id:null,
+     isDeleting:false
+    }));
+
+    toast.success('File removed successfully')
+
+
+  } catch {
+    toast.error('Error removing file, please try again')
+     setFileState((prev) => ({
+     ...prev,
+     isDeleting:false,
+     error:true
+
+    }));
+
   }
 }
 
@@ -197,7 +240,7 @@ async function handleRemoveFile(){
 
     if(fileState.objectUrl){ //this will be displayed when the file is uploaded
       return(
-        <RenderUploadedState previewUrl={fileState.objectUrl} />
+        <RenderUploadedState previewUrl={fileState.objectUrl} handleRemoveFile={handleRemoveFile} isDeleting={fileState.isDeleting} />
       )
     }
 
