@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -142,7 +142,7 @@ export function Uploader() {
 
       uploadFile(file);
     }
-  }, []);
+  }, [fileState.objectUrl]);
 
   function rejectedFiles(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
@@ -185,6 +185,15 @@ export function Uploader() {
 
     return <RenderEmptyState isDragActive={isDragActive} />
   }
+
+  useEffect(()=>{
+    return ()=>{ //for cleaning up purpose
+      if(fileState.objectUrl && !fileState.objectUrl.startsWith('http')){ // This condition checks if the objectUrl starts with 'http', which indicates that it's an external URL
+        // If it's not an external URL, it's a local URL, so we need to revoke it before setting a new one
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+    }
+  }, [fileState.objectUrl])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
