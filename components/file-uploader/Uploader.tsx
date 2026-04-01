@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { RenderEmptyState, RenderErrorState } from "./RenderState";
+import { RenderEmptyState, RenderEmptyState, RenderErrorState } from "./RenderState";
 import { toast } from "sonner";
 import type { FileRejection } from "react-dropzone";
 import { useState } from "react";
@@ -161,6 +161,24 @@ export function Uploader() {
     }
   }
 
+  function renderContent(){
+    if(fileState.uploading){
+      return <h1>Uploading...</h1>
+    }
+
+    if(fileState.error){
+      return <RenderErrorState />
+    }
+
+    if(fileState.objectUrl){
+      return(
+        <h1>upload fileRejection</h1>
+      )
+    }
+
+    return <RenderEmptyState isDragActive={isDragActive} />
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [] }, //only accept image only for now
@@ -182,7 +200,7 @@ export function Uploader() {
       <CardContent className="flex items-center justify-center h-full w-full p-4">
         <input {...getInputProps()} />
         {/* <RenderErrorState /> */}
-        <RenderEmptyState isDragActive={isDragActive} />
+        {renderContent()}
       </CardContent>
     </Card>
   );
