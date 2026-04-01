@@ -263,6 +263,7 @@ async function handleRemoveFile(){
     multiple: false, //can select only one file at a time
     maxSize: 5 * 1024 * 1024, //5mb max file size
     onDropRejected: rejectedFiles,
+    disabled: fileState.uploading || !!fileState.objectUrl, //hte !! is used to convert the value into boolean (for checking purpose)  
   });
   return (
     <Card
