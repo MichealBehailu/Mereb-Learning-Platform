@@ -142,7 +142,25 @@ export function Uploader() {
 
       uploadFile(file);
     }
-  }, [fileState.objectUrl]);
+  }, [fileState.objectUrl]
+);
+
+async function handleRemoveFile(){
+  if(fileState.isDeleting || !fileState.objectUrl) return; 
+
+  try {
+    setFileState((prev) => ({
+      ...prev,
+      isDeleting:true
+    }));
+
+    
+
+  } catch (error) {
+    
+  }
+}
+
 
   function rejectedFiles(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
