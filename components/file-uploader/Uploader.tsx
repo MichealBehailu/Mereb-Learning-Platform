@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { RenderEmptyState, RenderEmptyState, RenderErrorState } from "./RenderState";
+import { RenderEmptyState, RenderErrorState } from "./RenderState";
 import { toast } from "sonner";
 import type { FileRejection } from "react-dropzone";
 import { useState } from "react";
