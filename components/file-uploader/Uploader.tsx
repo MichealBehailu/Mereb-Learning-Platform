@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { RenderEmptyState, RenderErrorState } from "./RenderState";
+import { RenderEmptyState, RenderErrorState, RenderUploadedState, RenderUploadingState } from "./RenderState";
 import { toast } from "sonner";
 import type { FileRejection } from "react-dropzone";
 import { useState } from "react";
@@ -122,6 +122,13 @@ export function Uploader() {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
 
+      // Check if the objectUrl is a local URL or an external URL
+      // If it's a local URL, revoke it before setting a new one
+      if(fileState.objectUrl && !fileState.objectUrl.startsWith('http')){ // This condition checks if the objectUrl starts with 'http', which indicates that it's an external URL
+        // If it's not an external URL, it's a local URL, so we need to revoke it before setting a new one
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+
       setFileState({
         file: file,
         uploading: false,
@@ -162,17 +169,17 @@ export function Uploader() {
   }
 
   function renderContent(){
-    if(fileState.uploading){
-      return <h1>Uploading...</h1>
+    if(fileState.uploading){ //this shows uploading state
+      return <RenderUploadingState progress={fileState.progress} file={fileState.file as File} />
     }
 
-    if(fileState.error){
+    if(fileState.error){ //this shows error state
       return <RenderErrorState />
     }
 
-    if(fileState.objectUrl){
+    if(fileState.objectUrl){ //this will be displayed when the file is uploaded
       return(
-        <h1>Uploaded file</h1>
+        <RenderUploadedState previewUrl={fileState.objectUrl} />
       )
     }
 
