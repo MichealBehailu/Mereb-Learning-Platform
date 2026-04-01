@@ -132,6 +132,8 @@ export function Uploader() {
         isDeleting: false,
         fileType: "image",
       });
+
+      uploadFile(file);
     }
   }, []);
 
