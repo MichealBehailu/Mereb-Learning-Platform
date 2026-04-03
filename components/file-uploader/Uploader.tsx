@@ -26,7 +26,7 @@ interface iAppProps{
   onChange?: (value:string) => void;
 }
 
-export function Uploader() {
+export function Uploader({value, onChange}: iAppProps) {
   //main
   const [fileState, setFileState] = useState<UploaderState>({
     error: false, //this fields are for initials
@@ -36,6 +36,7 @@ export function Uploader() {
     progress: 0,
     isDeleting: false,
     fileType: "image",
+    key:value, //could be defined or not defined 
   });
 
   async function uploadFile(file: File) {
@@ -96,6 +97,8 @@ export function Uploader() {
               uploading: false,
               key: key,
             }));
+
+            onChange?.(key) //we pass the key after upload successfull 
 
             toast.success("File uploaded successfully");
             resolve();
@@ -182,6 +185,8 @@ async function handleRemoveFile(){
         // If it's not an external URL, it's a local URL, so we need to revoke it before setting a new one
         URL.revokeObjectURL(fileState.objectUrl);
       }
+
+      onChange?.("") //the key is empty because we deleted the file
 
     setFileState(() => ({
      file:null,
