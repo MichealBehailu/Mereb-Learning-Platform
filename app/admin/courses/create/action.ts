@@ -1,7 +1,7 @@
 "use server"
 
 import {CourseSchemaType, courseSchema} from "../../../../lib/zodSchemas";
-
+import {prisma} from '../../../../lib/db'
 export async function CreateCourse(data:CourseSchemaType) {
     try {
 
@@ -13,6 +13,9 @@ export async function CreateCourse(data:CourseSchemaType) {
                 message:'Invalid Form Data'
             }
         }
+
+        //creating a mutuation using prisma 
+        const data = await prisma.
         
     } catch {
         
