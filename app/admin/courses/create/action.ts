@@ -15,7 +15,17 @@ export async function CreateCourse(data:CourseSchemaType) {
         }
 
         //creating a mutuation using prisma 
-        const data = await prisma.
+        const data = await prisma.Course.create({
+            data:{
+                ...validation.data,
+                userId: "adndcdc"
+            }
+        });
+
+        return {
+            status : 'success',
+            message: 'Course created successfully'
+        }
         
     } catch {
         
