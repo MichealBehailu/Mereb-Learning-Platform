@@ -1,7 +1,7 @@
 // lib/db.ts
 import "dotenv/config";
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '../generated/prisma/client'
+import { PrismaClient } from '../prisma/generated/prisma/client'
 
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.

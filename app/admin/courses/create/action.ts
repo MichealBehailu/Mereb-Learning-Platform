@@ -15,7 +15,7 @@ export async function CreateCourse(values:CourseSchemaType) {
         }
 
         //creating a mutuation using prisma 
-        const data = await prisma.Course.create({
+        const data = await prisma.course.create({
             data:{
                 ...validation.data,
                 userId: "adndcdc" //this is required because of one to many relationship
