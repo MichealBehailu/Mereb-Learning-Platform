@@ -2,7 +2,8 @@
 
 import {CourseSchemaType, courseSchema} from "../../../../lib/zodSchemas";
 import {prisma} from '../../../../lib/db'
-export async function CreateCourse(values:CourseSchemaType) {
+import { ApiResponse } from "../../../../lib/types";
+export async function CreateCourse(values:CourseSchemaType):Promise<ApiResponse> {
     try {
 
         const validation = courseSchema.safeParse(values); //we have to validate the data //to get protected from attackers also
@@ -15,7 +16,7 @@ export async function CreateCourse(values:CourseSchemaType) {
         }
 
         //creating a mutuation using prisma 
-        const data = await prisma.course.create({
+        await prisma.course.create({
             data:{
                 ...validation.data,
                 userId: "adndcdc" //this is required because of one to many relationship
@@ -28,6 +29,9 @@ export async function CreateCourse(values:CourseSchemaType) {
         }
         
     } catch {
-        
+        return{
+            status:'error',
+            message:"Failed to create course"
+        }
     }
 }
