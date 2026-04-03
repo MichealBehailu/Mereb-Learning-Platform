@@ -36,10 +36,7 @@ import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Uploader } from "@/components/file-uploader/Uploader";
 
 
-interface iAppProps{
-  value?:string;
-  onChange?: (value:string) => void;
-}
+
 
 export default function CourseCreationPage() {
   const form = useForm<z.input<typeof courseSchema>>({

@@ -21,6 +21,11 @@ interface UploaderState {
   fileType: "image" | "video";
 }
 
+interface iAppProps{
+  value?:string;
+  onChange?: (value:string) => void;
+}
+
 export function Uploader() {
   //main
   const [fileState, setFileState] = useState<UploaderState>({
