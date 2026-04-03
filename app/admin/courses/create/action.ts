@@ -2,10 +2,10 @@
 
 import {CourseSchemaType, courseSchema} from "../../../../lib/zodSchemas";
 import {prisma} from '../../../../lib/db'
-export async function CreateCourse(data:CourseSchemaType) {
+export async function CreateCourse(values:CourseSchemaType) {
     try {
 
-        const validation = courseSchema.safeParse(data); //we have to validate the data //to get protected from attackers also
+        const validation = courseSchema.safeParse(values); //we have to validate the data //to get protected from attackers also
 
         if(!validation.success){
             return {
@@ -18,10 +18,10 @@ export async function CreateCourse(data:CourseSchemaType) {
         const data = await prisma.Course.create({
             data:{
                 ...validation.data,
-                userId: "adndcdc"
+                userId: "adndcdc" //this is required because of one to many relationship
             }
         });
-
+ 
         return {
             status : 'success',
             message: 'Course created successfully'
