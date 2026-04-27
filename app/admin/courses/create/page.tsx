@@ -16,6 +16,8 @@ import {
   courseLevels,
   courseSchema,
   courseStatus,
+  type CourseSchemaType,
+ 
 } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -41,7 +43,7 @@ import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Uploader } from "@/components/file-uploader/Uploader";
 import { useTransition } from "react";
 import { tryCatch } from "@/hooks/try-catch";
-import { CreateCourse } from '@/app/admin/courses/create/action'
+import { CreateCourse } from "@/app/admin/courses/create/action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -50,7 +52,7 @@ export default function CourseCreationPage() {
 
   const router = useRouter();
 
-  const form = useForm<z.input<typeof courseSchema>>({
+  const form = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
       //starting state of a form
@@ -67,20 +69,20 @@ export default function CourseCreationPage() {
     },
   });
 
-  function onSubmit(values: typeof courseSchema) {
+  function onSubmit(values: CourseSchemaType) {
     startTransition(async () => {
-      const {data:result,error} = await tryCatch(CreateCourse(values));
+      const { data: result, error } = await tryCatch(CreateCourse(values)); //using the trycatch hook //instead of wrtiitng try catch block
 
-      if(error){
-        toast.error('Unexpected error occurred, Please try again later');
+      if (error) {
+        toast.error("Unexpected error occurred, Please try again later");
         return;
       }
 
-      if(result.status === 'success'){
+      if (result.status === "success") {
         toast.success(result.message);
         form.reset();
-        router.push('/admin/courses');
-      }else if(result.status === 'error'){
+        router.push("/admin/courses");
+      } else if (result.status === "error") {
         toast.error(result.message);
       }
     });
@@ -344,7 +346,10 @@ export default function CourseCreationPage() {
                     Creating...
                     <Loader2 className="animate-spin ml-1" />
                   </>
-                ) : 'Create Course'} <PlusIcon className="ml-1" size={16} />
+                ) : (
+                  "Create Course"
+                )}{" "}
+                <PlusIcon className="ml-1" size={16} />
               </Button>
             </form>
           </Form>
