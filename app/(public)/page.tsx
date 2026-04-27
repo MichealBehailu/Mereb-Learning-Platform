@@ -41,7 +41,7 @@ export default function Home() {
         <div className="flex flex-col items-center text-center space-y-8 ">
           <Badge variant={"outline"}>The Place To Learn About Computer</Badge>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Elevate your Learning Experience
+            Elevate Your Learning Experience
           </h1>
           <p className=" max-w-[800px] text-muted-foreground text-center md:text-xl">
             Discover the power of personalized learning with our modern,
