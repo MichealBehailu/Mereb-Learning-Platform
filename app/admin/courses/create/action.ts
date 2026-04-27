@@ -3,7 +3,14 @@
 import {CourseSchemaType, courseSchema} from "../../../../lib/zodSchemas";
 import {prisma} from '../../../../lib/db'
 import { ApiResponse } from "../../../../lib/types";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 export async function CreateCourse(values:CourseSchemaType):Promise<ApiResponse> {
+
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
     try {
 
         const validation = courseSchema.safeParse(values); //we have to validate the data //to get protected from attackers also
@@ -18,8 +25,8 @@ export async function CreateCourse(values:CourseSchemaType):Promise<ApiResponse>
         //creating a mutuation using prisma 
         await prisma.course.create({
             data:{
-                ...validation.data,
-                userId: "adndcdc" //this is required because of one to many relationship
+                ...validation.data, //spread the data
+                userId: session?.user.id as string //this is required because of one to many relationship
             }
         });
  
