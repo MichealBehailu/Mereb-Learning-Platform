@@ -20,14 +20,20 @@ const aj = arcjet.withRule(
 )
 
 export async function DELETE(request: Request) {
+    
     const session = await auth.api.getSession({
         headers: await headers()
     })
+
     try {
 
         const decision = await aj.protect(request,{
             fingerprint : session?.user.id as string,
         });
+        
+        if(decision.isDenied()){
+            return NextResponse.json({error: "Too many requests"}, {status: 429});
+        }
         
         const body = await request.json();
 

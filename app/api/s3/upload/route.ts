@@ -41,7 +41,7 @@ export async function POST(request: Request){
         })
 
         if(decision.isDenied()){
-            return NextResponse.json({error: 'Too many requests', status: 429}, {status: 429})
+            return NextResponse.json({error: 'Too many requests'}, {status: 429})
         }
 
         const body = await request.json(); 
