@@ -3,6 +3,9 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
 import { emailOTP } from "better-auth/plugins"
 import { resend } from "./resend";
+import {admin} from "better-auth/plugins"
+
+
 export const auth = betterAuth({ //this creates the auth configuration file for the server side 
     database: prismaAdapter(prisma, { 
         provider: "postgresql", // or "mysql", "postgresql", ...etc
@@ -27,7 +30,8 @@ export const auth = betterAuth({ //this creates the auth configuration file for 
                 html: `<p>Your OTP is  <strong>${otp}</strong></p>`
               })
             }
-        }) 
+        }),
+        admin(),
     ]
 
 
