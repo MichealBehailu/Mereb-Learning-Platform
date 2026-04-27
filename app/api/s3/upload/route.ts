@@ -4,6 +4,8 @@ import { PutObjectCommand } from '@aws-sdk/client-s3'
 import {v4 as uuidv4} from 'uuid'
 import {getSignedUrl} from '@aws-sdk/s3-request-presigner'
 import {S3} from '@/lib/S3Client'
+import arcjet, { detectBot, fixedWindow } from '@/lib/arcjet'
+import { auth } from '@/lib/auth'
 
 const fileUploadSchema = z.object({
     fileName: z.string().min(1, {message: 'File name is required'}),
@@ -12,10 +14,36 @@ const fileUploadSchema = z.object({
     isImage: z.boolean()
 })
 
+//to protect the route from DDos or bot farm
+const aj = arcjet.withRule(
+   detectBot({
+    mode: 'LIVE', //block request 
+    allow : [], //dont want to allow 3rd party apps like ai 
+   })
+).withRule(
+    fixedWindow({
+        mode:'LIVE',
+        window: '1m', //allow the user to upload 5 files within 1 minute window
+        max: 5 //five request in 1 minute window
+    })
+)
+
 
 export async function POST(request: Request){
+    const session = await auth.api.getSession({
+        headers: request.headers,
+    })
     
     try {
+
+        const decision = await aj.protect(request, {
+            fingerprint: session?.user.id as string,
+        })
+
+        if(decision.isDenied()){
+            return NextResponse.json({error: 'Too many requests', status: 429}, {status: 429})
+        }
+
         const body = await request.json(); 
         const validation = fileUploadSchema.safeParse(body) //check if the body that is sent as an input validates the schema
 
