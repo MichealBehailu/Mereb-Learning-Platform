@@ -8,10 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeft, PlusIcon, SparkleIcon } from "lucide-react";
+import { ArrowLeft, Loader2, PlusIcon, SparkleIcon } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { courseCategories, courseLevels, courseSchema, courseStatus } from "@/lib/zodSchemas";
+import {
+  courseCategories,
+  courseLevels,
+  courseSchema,
+  courseStatus,
+} from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -34,11 +39,17 @@ import {
 } from "@/components/ui/select";
 import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Uploader } from "@/components/file-uploader/Uploader";
-
-
-
+import { useTransition } from "react";
+import { tryCatch } from "@/hooks/try-catch";
+import { CreateCourse } from '@/app/admin/courses/create/action'
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function CourseCreationPage() {
+  const [pending, startTransition] = useTransition();
+
+  const router = useRouter();
+
   const form = useForm<z.input<typeof courseSchema>>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
@@ -57,8 +68,22 @@ export default function CourseCreationPage() {
   });
 
   function onSubmit(values: typeof courseSchema) {
-    //instead of using z.infer we can use typeof courseSchema
-    console.log(values);
+    startTransition(async () => {
+      const {data:result,error} = await tryCatch(CreateCourse(values));
+
+      if(error){
+        toast.error('Unexpected error occurred, Please try again later');
+        return;
+      }
+
+      if(result.status === 'success'){
+        toast.success(result.message);
+        form.reset();
+        router.push('/admin/courses');
+      }else if(result.status === 'error'){
+        toast.error(result.message);
+      }
+    });
   }
 
   return (
@@ -163,7 +188,7 @@ export default function CourseCreationPage() {
                         className="min-h-[120px]"
                         {...field}
                       /> */}
-                      <RichTextEditor field={field}/>
+                      <RichTextEditor field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -178,7 +203,7 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Thumbnail image</FormLabel>
                     <FormControl>
-                      <Uploader onChange={field.onChange} value={field.value}/>
+                      <Uploader onChange={field.onChange} value={field.value} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -283,41 +308,44 @@ export default function CourseCreationPage() {
                     </FormItem>
                   )}
                 />
-
-
               </div>
               <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel>Status</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select Status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {courseStatus.map((status) => (
-                            <SelectItem key={status} value={status}>
-                              {status}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Status</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select Status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {courseStatus.map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {status}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                {/*TODO: Currently not implemented*/}
-<Button>
-                    Create Course <PlusIcon className="ml-1" size={16} />
-                </Button>
+              {/*TODO: Currently not implemented*/}
+              <Button type="submit" disabled={pending}>
+                {pending ? (
+                  <>
+                    Creating...
+                    <Loader2 className="animate-spin ml-1" />
+                  </>
+                ) : 'Create Course'} <PlusIcon className="ml-1" size={16} />
+              </Button>
             </form>
           </Form>
         </CardContent>
