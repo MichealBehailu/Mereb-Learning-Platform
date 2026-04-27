@@ -1,9 +1,34 @@
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import {S3} from "@/lib/S3Client";
+import arcjet, { detectBot, fixedWindow } from '@/lib/arcjet'
+import { auth } from '@/lib/auth'
+import { headers } from "next/headers";
+
+//to protect the route from DDos or bot farm
+const aj = arcjet.withRule(
+   detectBot({
+    mode: 'LIVE', //block request 
+    allow : [], //dont want to allow 3rd party apps like ai 
+   })
+).withRule(
+    fixedWindow({
+        mode:'LIVE',
+        window: '1m', //allow the user to upload 5 files within 1 minute window
+        max: 5 //five request in 1 minute window
+    })
+)
 
 export async function DELETE(request: Request) {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
     try {
+
+        const decision = await aj.protect(request,{
+            fingerprint : session?.user.id as string,
+        });
+        
         const body = await request.json();
 
         const key = body.key;
