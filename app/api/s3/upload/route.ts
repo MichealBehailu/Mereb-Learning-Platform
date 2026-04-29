@@ -6,6 +6,7 @@ import {getSignedUrl} from '@aws-sdk/s3-request-presigner'
 import {S3} from '@/lib/S3Client'
 import arcjet, { detectBot, fixedWindow } from '@/lib/arcjet'
 import { auth } from '@/lib/auth'
+import { requireAdmin } from '@/app/data/admin/require-admin'
 
 const fileUploadSchema = z.object({
     fileName: z.string().min(1, {message: 'File name is required'}),
@@ -30,9 +31,7 @@ const aj = arcjet.withRule(
 
 
 export async function POST(request: Request){
-    const session = await auth.api.getSession({
-        headers: request.headers,
-    })
+   const session = await requireAdmin()
     
     try {
 

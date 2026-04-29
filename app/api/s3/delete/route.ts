@@ -2,8 +2,7 @@ import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import {S3} from "@/lib/S3Client";
 import arcjet, { detectBot, fixedWindow } from '@/lib/arcjet'
-import { auth } from '@/lib/auth'
-import { headers } from "next/headers";
+import { requireAdmin } from "@/app/data/admin/require-admin";
 
 //to protect the route from DDos or bot farm
 const aj = arcjet.withRule(
@@ -21,10 +20,7 @@ const aj = arcjet.withRule(
 
 export async function DELETE(request: Request) {
     
-    const session = await auth.api.getSession({
-        headers: await headers()
-    })
-
+   const session = await requireAdmin()
     try {
 
         const decision = await aj.protect(request,{
