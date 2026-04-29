@@ -4,6 +4,7 @@ import {S3} from "@/lib/S3Client";
 import arcjet, { detectBot, fixedWindow } from '@/lib/arcjet'
 import { requireAdmin } from "@/app/data/admin/require-admin";
 
+
 //to protect the route from DDos or bot farm
 const aj = arcjet.withRule(
    detectBot({

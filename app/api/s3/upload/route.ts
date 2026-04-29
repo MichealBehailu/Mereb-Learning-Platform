@@ -8,6 +8,8 @@ import arcjet, { detectBot, fixedWindow } from '@/lib/arcjet'
 import { auth } from '@/lib/auth'
 import { requireAdmin } from '@/app/data/admin/require-admin'
 
+
+
 const fileUploadSchema = z.object({
     fileName: z.string().min(1, {message: 'File name is required'}),
     contentType: z.string().min(1, {message: 'Content type is required'}),
