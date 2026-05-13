@@ -7,3 +7,6 @@ export const S3 = new S3Client({
     forcePathStyle:false,
 
 })
+
+
+// working S3
